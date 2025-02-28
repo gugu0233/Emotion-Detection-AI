@@ -19,3 +19,46 @@ dataset/
 │   ├── neutral/
 │   ├── surprised/
 
+train.py: trains the CNN model on the FER2013 dataset
+
+Training process:
+- import libraries
+- set up data augmentation rules and apply on training set
+- only rescale validation set
+- load dataset and apply augmentation
+- build cnn model:
+    - 3 convolutional layers (extract features)
+    - 3 max pooling layers (reduce spatial size)
+    - 1 flatten layer (convert 2D matrix data to 1D vector)
+    - 1 dense layer (fully connected layer)
+    - 1 dropout layer (prevent overfitting)
+    - 1 output layer (softmax activation function)
+
+    - after the 3 convolutional layers and the 3 max pooling layers, the batch of 32 images are turned into 128 feature maps, and then flattend into a 6*6*128 element vector
+    - in the dense layer, 128 neurons work individually on the array and the result of this layer will be a 128 element vector, each element representing the result of each neuron's formula and 
+    ReLU activation function
+    - the dropout layer randomly sets a fraction rate of the numbers in the array to 0 at each update during training time, which helps prevent overfitting
+    - finally, the output layer has 5 neurons (one for each emotion) and uses the softmax activation function to convert the output into a probability distribution
+- compile the model (optimizer updates weights to minimize loss, loss function measures how well the model is doing, metrics evaluates the model)
+- train the model (10 times)
+- save the model as .h5 file
+
+Real-Time Detection process:
+- import libraries
+- load the trained model
+- class labels
+- used Haar cascades to detect faces
+- used OpenCV to capture video from webcam
+- read frame and convert to grayscale
+- detect faces in the frame
+- process each face:
+    - extract ROI
+    - resize to 48x48 pixels
+    - convert to array
+    - expand dimensions
+- predict emotion
+- draw rectangle around face
+- display emotion
+
+
+
